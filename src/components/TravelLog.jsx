@@ -3,7 +3,6 @@ import "./log.css";
 import LogsTable from "./LogsTable";
 
 export default function TravelLog() {
-
   const date = new Date();
   const currentDate = date.toLocaleDateString();
 
@@ -18,8 +17,8 @@ export default function TravelLog() {
     "Supplier 1",
   ];
 
-  const [dest, setDest] = useState(destLocations)
-  const [start, setStart] = useState(startLocations)
+  const [dest, setDest] = useState(destLocations);
+  const [start, setStart] = useState(startLocations);
 
   const [meter, setMeter] = useState(true);
 
@@ -32,8 +31,7 @@ export default function TravelLog() {
     remark: "",
   });
 
-  const [travelList, setTravelList] = useState([])
-
+  const [travelList, setTravelList] = useState([]);
 
   const handleChange = (e) => {
     setFormData({
@@ -44,18 +42,20 @@ export default function TravelLog() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setTravelList([...travelList, formData])
+    setTravelList([...travelList, formData]);
 
-    setDest(dest.filter(d=> d !== formData.destination))
-    setStart([start[0], formData.destination])
+    setDest(dest.filter((d) => d !== formData.destination));
+    setStart([start[0], formData.destination]);
 
     setFormData({
-      ...formData,
       start: formData.destination,
-      destination: dest
-    })
+      destination: dest[0],
+      date: currentDate,
+      meter: "",
+      other: "",
+      remark: "",
+    });
   };
-
 
   return (
     <div className="">
@@ -194,7 +194,7 @@ export default function TravelLog() {
           </button>
         </form>
       </div>
-      <LogsTable travels={travelList}/>
+      <LogsTable travels={travelList} />
     </div>
   );
 }
