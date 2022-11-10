@@ -11,7 +11,6 @@ export default function LogsTable(props) {
             align-middle"
         >
           <thead className="table-light">
-            <caption>Travels</caption>
             <tr>
               <th>Start</th>
               <th>Destination</th>

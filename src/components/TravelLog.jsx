@@ -22,6 +22,7 @@ export default function TravelLog() {
 
   const [meter, setMeter] = useState(true);
 
+  // Form Data Initial State
   const [formData, setFormData] = useState({
     start: start[0],
     destination: "",
@@ -42,11 +43,16 @@ export default function TravelLog() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Form validation
+
+    // Add form data to list
     setTravelList([...travelList, formData]);
 
     setDest(dest.filter((d) => d !== formData.destination));
     setStart([start[0], formData.destination]);
 
+    // Reset form data
     setFormData({
       start: formData.destination,
       destination: dest[0],
@@ -60,7 +66,10 @@ export default function TravelLog() {
   return (
     <div className="">
       <div className="travel-log-form">
-        <form className="row g-3 p-2" onSubmit={handleSubmit}>
+        <form
+          className='row g-3 p-2 needs-validation'
+          onSubmit={handleSubmit}
+        >
           <h2>Travel Log</h2>
           <div className="col-md-4">
             <label htmlFor="start" className="form-label">
@@ -72,6 +81,7 @@ export default function TravelLog() {
               id="start"
               name="start"
               onChange={handleChange}
+              required
             >
               {start.map((s, i) => {
                 return (
@@ -81,6 +91,7 @@ export default function TravelLog() {
                 );
               })}
             </select>
+            <div className="invalid-feedback">Please choose a username.</div>
           </div>
           <div className="col-md-4">
             <label htmlFor="destinations" className="form-label">
@@ -94,6 +105,7 @@ export default function TravelLog() {
               id="destinations"
               onChange={handleChange}
               placeholder="Destination..."
+              required
             />
             <datalist aria-label="destination" id="destination">
               {dest.map((d, i) => {
@@ -104,6 +116,7 @@ export default function TravelLog() {
                 );
               })}
             </datalist>
+            <div className="invalid-feedback">Please choose a username.</div>
           </div>
           <div className="col-md-4">
             <label htmlFor="date" className="form-label">
@@ -145,6 +158,7 @@ export default function TravelLog() {
               disabled={!meter}
               value={formData.meter}
               onChange={handleChange}
+              required
             />
           </div>
           <div className="col-md-2">
@@ -172,6 +186,7 @@ export default function TravelLog() {
               disabled={meter}
               value={formData.other}
               onChange={handleChange}
+              required
             />
           </div>
           <div className="col-md-8">
@@ -187,6 +202,7 @@ export default function TravelLog() {
               aria-label="remark"
               value={formData.remark}
               onChange={handleChange}
+              required
             />
           </div>
           <button className="btn btn-primary" type="submit">
