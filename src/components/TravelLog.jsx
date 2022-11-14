@@ -24,6 +24,7 @@ export default function TravelLog() {
 
   // Form Data Initial State
   const [formData, setFormData] = useState({
+    username: "admin",
     start: start[0],
     destination: "",
     date: currentDate,
@@ -54,6 +55,7 @@ export default function TravelLog() {
 
     // Reset form data
     setFormData({
+      username: "admin",
       start: formData.destination,
       destination: dest[0],
       date: currentDate,
@@ -66,11 +68,8 @@ export default function TravelLog() {
   return (
     <div className="">
       <div className="travel-log-form">
-        <form
-          className='row g-3 p-2 needs-validation'
-          onSubmit={handleSubmit}
-        >
-          <h2>Travel Log</h2>
+        <form className="row g-3 p-2 needs-validation" onSubmit={handleSubmit}>
+          <h2>Travel Log <span>{formData.username}</span></h2>
           <div className="col-md-4">
             <label htmlFor="start" className="form-label">
               Start:
