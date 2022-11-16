@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from 'axios'
 import "./log.css";
 import LogsTable from "./LogsTable";
 
@@ -42,8 +43,10 @@ export default function TravelLog() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(formData)
+    const res = await axios.post('/', {formData})
 
     // Form validation
 
