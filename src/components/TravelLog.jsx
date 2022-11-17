@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from 'axios'
+import axios from "axios";
 import "./log.css";
 import LogsTable from "./LogsTable";
 
@@ -29,8 +29,8 @@ export default function TravelLog() {
     start: start[0],
     destination: "",
     date: currentDate,
-    meter: "",
-    other: "",
+    meter: 0,
+    other: 0,
     remark: "",
   });
 
@@ -43,10 +43,18 @@ export default function TravelLog() {
     });
   };
 
+  const baseURL='http://localhost:5000/api/v1'
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData)
-    const res = await axios.post('/', {formData})
+    console.log(formData);
+
+    try {
+      const res = await axios.post(`${baseURL}/travels`, { formData });
+      console.log(res)
+    } catch (error) {
+      console.log(error);
+    }
 
     // Form validation
 
@@ -72,7 +80,9 @@ export default function TravelLog() {
     <div className="">
       <div className="travel-log-form">
         <form className="row g-3 p-2 needs-validation" onSubmit={handleSubmit}>
-          <h2>Travel Log <span>{formData.username}</span></h2>
+          <h2>
+            Travel Log <span>{formData.username}</span>
+          </h2>
           <div className="col-md-4">
             <label htmlFor="start" className="form-label">
               Start:
@@ -144,7 +154,6 @@ export default function TravelLog() {
                 id="meter"
                 onClick={() => {
                   setMeter(true);
-                  formData.other = 0;
                 }}
               />
               <label className="form-check-label" htmlFor="meter">
@@ -172,7 +181,6 @@ export default function TravelLog() {
                 id="other"
                 onClick={() => {
                   setMeter(false);
-                  formData.meter = 0;
                 }}
               />
               <label className="form-check-label" htmlFor="other">
