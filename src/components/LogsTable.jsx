@@ -31,7 +31,7 @@ export default function LogsTable(props) {
             {props.travels.map((travel, i) => {
               return (
                 <tr className="" key={i}>
-                  <td>{travel._id}</td>
+                  <td>{i+1}</td>
                   <td>{travel.start}</td>
                   <td>{travel.destination}</td>
                   <td>{travel.meter}</td>
