@@ -3,6 +3,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faDeleteLeft } from '@fortawesome/free-solid-svg-icons'
 
 export default function LogsTable(props) {
+
+  const handleDelete = ()=>{
+    console.log("cliccked")
+  }
   return (
     <div className="logs-table p-2 w-75 m-0 m-auto">
       <div className="table-responsive">
@@ -24,16 +28,16 @@ export default function LogsTable(props) {
             </tr>
           </thead>
           <tbody className="table-group-divider">
-            {props.travels.map((t, i) => {
+            {props.travels.map((travel, i) => {
               return (
                 <tr className="" key={i}>
-                  <td>{i+1}</td>
-                  <td>{t.start}</td>
-                  <td>{t.destination}</td>
-                  <td>{t.meter}</td>
-                  <td>{t.other}</td>
-                  <td>{t.remark}</td>
-                  <td><FontAwesomeIcon icon={faDeleteLeft} /></td>
+                  <td>{travel._id}</td>
+                  <td>{travel.start}</td>
+                  <td>{travel.destination}</td>
+                  <td>{travel.meter}</td>
+                  <td>{travel.other}</td>
+                  <td>{travel.remark}</td>
+                  <td><FontAwesomeIcon icon={faDeleteLeft} onClick={handleDelete} style={{cursor: "pointer"}} /></td>
                   {/* <td><FontAwesomeIcon icon="fa-solid fa-delete-left" /></td> */}
                 </tr>
               );

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./log.css";
 import LogsTable from "./LogsTable";
@@ -18,9 +18,10 @@ export default function TravelLog() {
     "Supplier 1",
   ];
 
+  const baseURL = "http://localhost:5000/api/v1";
+
   const [dest, setDest] = useState(destLocations);
   const [start, setStart] = useState(startLocations);
-
   const [meter, setMeter] = useState(true);
 
   // Form Data Initial State
@@ -36,6 +37,16 @@ export default function TravelLog() {
 
   const [travelList, setTravelList] = useState([]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await axios.get(`${baseURL}/travels`);
+      const travels = res.data.travels;
+      setTravelList(travels);
+    };
+
+    fetchData();
+  }, [travelList]);
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -43,15 +54,13 @@ export default function TravelLog() {
     });
   };
 
-  const baseURL='http://localhost:5000/api/v1'
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(formData);
 
     try {
       const res = await axios.post(`${baseURL}/travels`, { formData });
-      console.log(res)
+      console.log(res);
     } catch (error) {
       console.log(error);
     }
@@ -59,7 +68,7 @@ export default function TravelLog() {
     // Form validation
 
     // Add form data to list
-    setTravelList([...travelList, formData]);
+    // setTravelList([...travelList, formData]);
 
     setDest(dest.filter((d) => d !== formData.destination));
     setStart([start[0], formData.destination]);
@@ -221,6 +230,7 @@ export default function TravelLog() {
         </form>
       </div>
       <LogsTable travels={travelList} />
+      {/* <LogsTable travels={travelList} /> */}
     </div>
   );
 }
