@@ -18,8 +18,8 @@ export default function TravelLog() {
     "Supplier 1",
   ];
 
-  // const baseURL = "http://localhost:5000/api/v1";
-  const baseURL = "https://still-fortress-01946.herokuapp.com/api/v1"
+  const baseURL = "http://localhost:5000/api/v1";
+  // const baseURL = "https://still-fortress-01946.herokuapp.com/api/v1"
 
   const [dest, setDest] = useState(destLocations);
   const [start, setStart] = useState(startLocations);
@@ -46,7 +46,8 @@ export default function TravelLog() {
     };
 
     fetchData();
-  }, [travelList]);
+    console.log("render")
+  }, []);
 
   const handleChange = (e) => {
     setFormData({
