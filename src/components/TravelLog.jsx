@@ -37,6 +37,7 @@ export default function TravelLog() {
   });
 
   const [travelList, setTravelList] = useState([]);
+  const [travel, setTravel] = useState();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,11 +59,12 @@ export default function TravelLog() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
 
     try {
       const res = await axios.post(`${baseURL}/travels`, { formData });
-      console.log(res);
+      const {newTravel, ...data} = res.data;
+      setTravelList([...travelList, newTravel]);
+
     } catch (error) {
       console.log(error);
     }
