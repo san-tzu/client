@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./log.css";
 import LogsTable from "./LogsTable";
+
+// --- Need to config ---
 // import dotenv from "dotenv";
 // dotenv.config();
 
@@ -11,16 +13,8 @@ export default function TravelLog() {
 
   const startLocations = ["Home"];
 
-  const destLocations = [
-    "Office",
-    "Home",
-    "Customer 1",
-    "Customer 2",
-    "Customer 3",
-    "Supplier 1",
-  ];
-
-  let baseURL = "https://still-fortress-01946.herokuapp.com/api/v1";
+  // const baseURL = "http://localhost:5000/api/v1";
+  const baseURL = "https://still-fortress-01946.herokuapp.com/api/v1";
 
   // if (process.env.NODE_ENV === "development") {
   //   // Local Database
@@ -29,9 +23,8 @@ export default function TravelLog() {
   //   // Atlas Database
   //   baseURL = process.env.API_URL;
   // }
-  console.log(process.env.NODE_ENV)
 
-  const [dest, setDest] = useState(destLocations);
+  const [dest, setDest] = useState([]);
   const [start, setStart] = useState(startLocations);
   const [meter, setMeter] = useState(true);
 
@@ -39,7 +32,7 @@ export default function TravelLog() {
   const [formData, setFormData] = useState({
     username: "admin",
     start: start[0],
-    destination: "",
+    destination: [""],
     date: currentDate,
     meter: 0,
     other: 0,
@@ -47,13 +40,16 @@ export default function TravelLog() {
   });
 
   const [travelList, setTravelList] = useState([]);
-  const [travel, setTravel] = useState();
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await axios.get(`${baseURL}/travels`);
-      const travels = res.data.travels;
-      setTravelList(travels);
+      try {
+        const res = await axios.get(`${baseURL}/travels`);
+        const travels = res.data.travels;
+        setTravelList(travels);
+      } catch (error) {
+        console.log(error);
+      }
     };
 
     fetchData();
@@ -73,29 +69,23 @@ export default function TravelLog() {
     try {
       const res = await axios.post(`${baseURL}/travels`, { formData });
       const { newTravel, ...data } = res.data;
+
       setTravelList([...travelList, newTravel]);
+      setDest(dest.filter((d) => d !== newTravel.destination));
+      setStart([start[0], newTravel.destination]);
+
+      setFormData({
+        username: "admin",
+        start: newTravel.destination,
+        destination: dest[0],
+        date: currentDate,
+        meter: 0,
+        other: 0,
+        remark: "",
+      });
     } catch (error) {
       console.log(error);
     }
-
-    // Form validation
-
-    // Add form data to list
-    // setTravelList([...travelList, formData]);
-
-    setDest(dest.filter((d) => d !== formData.destination));
-    setStart([start[0], formData.destination]);
-
-    // Reset form data
-    setFormData({
-      username: "admin",
-      start: formData.destination,
-      destination: dest[0],
-      date: currentDate,
-      meter: "",
-      other: "",
-      remark: "",
-    });
   };
 
   return (
@@ -111,10 +101,10 @@ export default function TravelLog() {
             </label>
             <input
               type="text"
-              className="form-select"
+              className="form-control"
               list="start"
               name="start"
-              id="start"
+              id="startLoc"
               onChange={handleChange}
               placeholder="Start Location..."
               required
@@ -139,7 +129,7 @@ export default function TravelLog() {
               className="form-control"
               list="destination"
               name="destination"
-              id="destinations"
+              id="dest"
               onChange={handleChange}
               placeholder="Destination..."
               required

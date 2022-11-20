@@ -5,7 +5,7 @@ import { faDeleteLeft } from '@fortawesome/free-solid-svg-icons'
 export default function LogsTable(props) {
 
   const handleDelete = ()=>{
-    console.log("cliccked")
+    console.log("clicked")
   }
   return (
     <div className="logs-table p-2 w-75 m-0 m-auto">
@@ -30,7 +30,7 @@ export default function LogsTable(props) {
           <tbody className="table-group-divider">
             {props.travels.map((travel, i) => {
               return (
-                <tr className="" key={i}>
+                <tr className="" key={travel._id}>
                   <td>{i+1}</td>
                   <td>{travel.start}</td>
                   <td>{travel.destination}</td>
