@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./log.css";
 import LogsTable from "./LogsTable";
-import dotenv from "dotenv";
-dotenv.config();
+// import dotenv from "dotenv";
+// dotenv.config();
 
 export default function TravelLog() {
   const date = new Date();
@@ -22,13 +22,14 @@ export default function TravelLog() {
 
   let baseURL = "https://still-fortress-01946.herokuapp.com/api/v1";
 
-  if (process.env.NODE_ENV === "development") {
-    // Local Database
-    baseURL = process.env.LOCAL_URL;
-  } else {
-    // Atlas Database
-    baseURL = process.env.API_URL;
-  }
+  // if (process.env.NODE_ENV === "development") {
+  //   // Local Database
+  //   baseURL = process.env.LOCAL_URL;
+  // } else {
+  //   // Atlas Database
+  //   baseURL = process.env.API_URL;
+  // }
+  console.log(process.env.NODE_ENV)
 
   const [dest, setDest] = useState(destLocations);
   const [start, setStart] = useState(startLocations);
