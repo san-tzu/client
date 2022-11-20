@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./log.css";
 import LogsTable from "./LogsTable";
+import dotenv from "dotenv";
+dotenv.config();
 
 export default function TravelLog() {
   const date = new Date();
@@ -18,8 +20,15 @@ export default function TravelLog() {
     "Supplier 1",
   ];
 
-  const baseURL = "http://localhost:5000/api/v1";
-  // const baseURL = "https://still-fortress-01946.herokuapp.com/api/v1"
+  let baseURL = "https://still-fortress-01946.herokuapp.com/api/v1";
+
+  if (process.env.NODE_ENV === "development") {
+    // Local Database
+    baseURL = process.env.LOCAL_URL;
+  } else {
+    // Atlas Database
+    baseURL = process.env.API_URL;
+  }
 
   const [dest, setDest] = useState(destLocations);
   const [start, setStart] = useState(startLocations);
@@ -47,7 +56,7 @@ export default function TravelLog() {
     };
 
     fetchData();
-    console.log("render")
+    console.log("render");
   }, []);
 
   const handleChange = (e) => {
@@ -62,9 +71,8 @@ export default function TravelLog() {
 
     try {
       const res = await axios.post(`${baseURL}/travels`, { formData });
-      const {newTravel, ...data} = res.data;
+      const { newTravel, ...data } = res.data;
       setTravelList([...travelList, newTravel]);
-
     } catch (error) {
       console.log(error);
     }
@@ -100,14 +108,17 @@ export default function TravelLog() {
             <label htmlFor="start" className="form-label">
               Start:
             </label>
-            <select
+            <input
+              type="text"
               className="form-select"
-              aria-label="start"
-              id="start"
+              list="start"
               name="start"
+              id="start"
               onChange={handleChange}
+              placeholder="Start Location..."
               required
-            >
+            />
+            <datalist aria-label="start" id="start">
               {start.map((s, i) => {
                 return (
                   <option key={i} value={s}>
@@ -115,7 +126,7 @@ export default function TravelLog() {
                   </option>
                 );
               })}
-            </select>
+            </datalist>
             <div className="invalid-feedback">Please choose a username.</div>
           </div>
           <div className="col-md-4">
