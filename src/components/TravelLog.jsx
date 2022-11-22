@@ -11,8 +11,6 @@ export default function TravelLog() {
   const date = new Date();
   const currentDate = date.toLocaleDateString();
 
-  const startLocations = ["Home"];
-
   // const baseURL = "http://localhost:5000/api/v1";
   const baseURL = "https://still-fortress-01946.herokuapp.com/api/v1";
 
@@ -24,22 +22,8 @@ export default function TravelLog() {
   //   baseURL = process.env.API_URL;
   // }
 
-  const [dest, setDest] = useState([]);
-  const [start, setStart] = useState(startLocations);
-  const [meter, setMeter] = useState(true);
-
-  // Form Data Initial State
-  const [formData, setFormData] = useState({
-    username: "admin",
-    start: start[0],
-    destination: [""],
-    date: currentDate,
-    meter: 0,
-    other: 0,
-    remark: "",
-  });
-
   const [travelList, setTravelList] = useState([]);
+  const [lastTravel, setLastTravel] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -53,15 +37,33 @@ export default function TravelLog() {
     };
 
     fetchData();
+    setLastTravel(travelList[travelList.length - 1]);
     console.log("render");
-  }, []);
+  }, [lastTravel]);
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
+  console.log(lastTravel);
+
+  // Form Data Initial State
+  const [formData, setFormData] = useState({
+    username: "admin",
+    start: lastTravel ? lastTravel.destination :"Home" ,
+    destination: [""],
+    date: currentDate,
+    meter: 0,
+    other: 0,
+    remark: "",
+  });
+  
+    const handleChange = (e) => {
+      setFormData({
+        ...formData,
+        [e.target.name]: e.target.value,
+      });
+    };
+
+  const [dest, setDest] = useState([]);
+  const [start, setStart] = useState([]);
+  const [meter, setMeter] = useState(true);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -72,7 +74,7 @@ export default function TravelLog() {
 
       setTravelList([...travelList, newTravel]);
       setDest(dest.filter((d) => d !== newTravel.destination));
-      setStart([start[0], newTravel.destination]);
+      setStart([!lastTravel  ? newTravel.destination : lastTravel.destination]);
 
       setFormData({
         username: "admin",
@@ -235,7 +237,8 @@ export default function TravelLog() {
           </button>
         </form>
       </div>
-      <LogsTable travels={travelList} />
+      <button className="btn btn-sm btn-success btn-block" onClick={()=> console.log("Clicked btn")}>refresh</button> 
+      {travelList && <LogsTable travels={travelList} />}
       {/* <LogsTable travels={travelList} /> */}
     </div>
   );

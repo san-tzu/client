@@ -1,11 +1,19 @@
 import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faDeleteLeft } from '@fortawesome/free-solid-svg-icons'
+import axios from "axios";
 
 export default function LogsTable(props) {
+  const baseURL = "https://still-fortress-01946.herokuapp.com/api/v1";
 
-  const handleDelete = ()=>{
+
+  const handleDelete = async (id, e)=>{
     console.log("clicked")
+    try {
+      await axios.delete(`${baseURL}/travels/${id}`)
+    } catch (error) {
+      console.log(error);
+    }
   }
   return (
     <div className="logs-table p-2 w-75 m-0 m-auto">
@@ -37,7 +45,7 @@ export default function LogsTable(props) {
                   <td>{travel.meter}</td>
                   <td>{travel.other}</td>
                   <td>{travel.remark}</td>
-                  <td><FontAwesomeIcon icon={faDeleteLeft} onClick={handleDelete} style={{cursor: "pointer"}} /></td>
+                  <td><FontAwesomeIcon icon={faDeleteLeft} onClick={(e)=>handleDelete(travel._id, e)} style={{cursor: "pointer"}} /></td>
                   {/* <td><FontAwesomeIcon icon="fa-solid fa-delete-left" /></td> */}
                 </tr>
               );
