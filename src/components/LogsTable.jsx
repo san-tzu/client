@@ -4,7 +4,8 @@ import { faDeleteLeft } from '@fortawesome/free-solid-svg-icons'
 import axios from "axios";
 
 export default function LogsTable(props) {
-  const baseURL = "https://still-fortress-01946.herokuapp.com/api/v1";
+  // const baseURL = "https://still-fortress-01946.herokuapp.com/api/v1";
+  const baseURL = "http://localhost:5000/api/v1";
 
 
   const handleDelete = async (id, e)=>{
